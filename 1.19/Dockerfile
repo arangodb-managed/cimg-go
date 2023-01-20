@@ -30,13 +30,13 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 	if [[ ${GO_VERSION:(-2)} == ".0" ]]; then \
 	GO_VERSION=${GO_VERSION:0:-2}; \
 	fi && \
-	curl -sSL "https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz" | sudo tar -xz -C /usr/local/ && \
+	curl -sSL "https://golang.org/dl/go${GO_VERSION}.linux-${TARGETARCH/aarch64/arm64}.tar.gz" | sudo tar -xz -C /usr/local/ && \
 	mkdir -p /home/circleci/go/bin
 
 # Install related tools
 ENV GOTESTSUM_V=1.8.2
 ENV GOCI_LINT_V=1.49.0
-RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v${GOTESTSUM_V}/gotestsum_${GOTESTSUM_V}_linux_amd64.tar.gz" | \
+RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v${GOTESTSUM_V}/gotestsum_${GOTESTSUM_V}_linux_${TARGETARCH/aarch64/arm64}.tar.gz" | \
 	sudo tar -xz -C /usr/local/bin gotestsum && \
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b /usr/local/bin v${GOCI_LINT_V}
 
