@@ -5,11 +5,18 @@
 # By policy, the base image tag should be a quarterly tag unless there's a 
 # specific reason to use a different one. This means January, April, July, or 
 # October.
-FROM cimg/base:2023.04
+# FROM cimg/base:2023.04
+
+# Oasis added begin
+ARG CIMGBASETAG
+FROM arangodboasis/cimg-base:${CIMGBASETAG}
+
+ARG GO_VERSION
+# Oasis added end
 
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
-ENV GO_VER="1.20.7"
+ENV GO_VER=GO_VERSION
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
