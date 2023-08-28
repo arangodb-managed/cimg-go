@@ -16,7 +16,7 @@ ARG GO_VERSION
 
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
-ENV GO_VER=GO_VERSION
+ENV GO_VER=${GO_VERSION}
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
