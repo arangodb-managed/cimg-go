@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-GOVERSION=1.21.9
+GOVERSION=1.22.2
 DOCKERIMAGE=arangodboasis/cimg-go:${GOVERSION}-${CIRCLE_TAG:-$CIRCLE_BRANCH-$CIRCLE_SHA1}
 echo Building ${DOCKERIMAGE}
 
@@ -13,6 +13,6 @@ else
         --build-arg GO_VERSION=${GOVERSION} \
         --platform linux/amd64,linux/arm64 \
         --push \
-        --file 1.21/Dockerfile \
+        --file 1.22/Dockerfile \
         -t ${DOCKERIMAGE} .
 fi
