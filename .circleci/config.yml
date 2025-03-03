@@ -5,6 +5,19 @@ parameters:
     type: string
     default: "v0.4.2" 
 
+executors:
+  machine-executor:
+    machine:
+      image: ubuntu-2204:current
+      docker_layer_caching: true
+
+aliases:
+  - &notify_slack_on_fail
+    slack/notify:
+      channel: 'C056RL4BXG9' #status-go channel
+      event: fail
+      template: basic_fail_1
+
 jobs:
   build:
     parameters:
@@ -42,6 +55,11 @@ jobs:
           event: fail
           template: basic_fail_1
   check_version:
+    executor: machine-executor
+    steps:
+        - checkout
+        - run: make check-updates
+        - *notify_slack_on_fail
 
 
 orbs:
@@ -64,18 +82,18 @@ workflows:
               ignore: /.*/
             tags:
               only: /^v.*/
-  check_cimg_new_version_each_month:
-  triggers:
-    - schedule:
-        cron: "0 0 1 * *"  # Runs at midnight UTC on the 1st of every month
-        filters:
-          branches:
-            only: main
-  jobs:
-    - check_version
-      machine: true
-      steps:
-        - checkout
-        - run:
-          name: Check for cimg updates
-          command: make check-updates
+
+  # Monthly check for new versions of cimg-go
+  monthly_new_version_check:
+    jobs:
+      - check_version:
+          context:
+            - slack
+    triggers:
+      - schedule:
+          # Midnight UTC on the 1st of every month
+          cron: 0 0 1 * *
+          filters:
+            branches:
+              only: master
+    
