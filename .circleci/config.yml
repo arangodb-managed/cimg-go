@@ -41,6 +41,8 @@ jobs:
       - slack/notify:
           event: fail
           template: basic_fail_1
+  check_version:
+
 
 orbs:
   slack: circleci/slack@4.1
@@ -62,3 +64,18 @@ workflows:
               ignore: /.*/
             tags:
               only: /^v.*/
+  check_cimg_new_version_each_month:
+  triggers:
+    - schedule:
+        cron: "0 0 1 * *"  # Runs at midnight UTC on the 1st of every month
+        filters:
+          branches:
+            only: main
+  jobs:
+    - check_version
+      machine: true
+      steps:
+        - checkout
+        - run:
+          name: Check for cimg updates
+          command: make check-updates
