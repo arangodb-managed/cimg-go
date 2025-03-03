@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
+# Do not edit by hand; please use build scripts/templates to make changes
+set -eo pipefail
 
-GOVERSION=1.22.8
+GOVERSION=1.22.12
 DOCKERIMAGE=arangodboasis/cimg-go:${GOVERSION}-${CIRCLE_TAG:-$CIRCLE_BRANCH-$CIRCLE_SHA1}
 echo Building ${DOCKERIMAGE}
 
