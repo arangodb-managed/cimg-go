@@ -52,6 +52,7 @@ reset:
 
 
 check-updates:
+	echo "$(shell git remote show)"
 	@for dir in $(shell git ls-tree -d --name-only $(UPSTREAM_BRANCH_SLASH)); do \
 		if [ -d "$$dir" ] && [ "$$(echo $$dir | head -c 1)" != "." ]; then \
 			if [ "$$(git ls-tree -d HEAD $$dir)" = "" ]; then \
