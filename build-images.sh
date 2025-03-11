@@ -3,7 +3,8 @@
 set -eo pipefail
 
 GOVERSION=1.22.12
-DOCKERIMAGE=arangodboasis/cimg-go:${GOVERSION}-${CIRCLE_TAG:-$CIRCLE_BRANCH-$CIRCLE_SHA1}
+CIRCLE_BRANCH_SANITIZED=${CIRCLE_BRANCH//\/}
+DOCKERIMAGE=arangodboasis/cimg-go:${GOVERSION}-${CIRCLE_TAG:-CIRCLE_BRANCH_SANITIZED-$CIRCLE_SHA1}
 echo Building ${DOCKERIMAGE}
 
 if [ "$1" = "latest" ]; then
