@@ -82,6 +82,8 @@ workflows:
               ignore: /.*/
             tags:
               only: /^v.*/
+      - check_version:
+          
 
   # Monthly check for new versions of cimg-go
   monthly_new_version_check:
