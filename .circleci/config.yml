@@ -83,8 +83,8 @@ workflows:
             tags:
               only: /^v.*/
       - check_version:
-          context: 
-            - slack
+          context:
+            - arangodboasis
 
 
   # Monthly check for new versions of cimg-go
@@ -92,7 +92,7 @@ workflows:
     jobs:
       - check_version:
           context:
-            - slack
+            - arangodboasis
     triggers:
       - schedule:
           # Midnight UTC on the 1st of every month
