@@ -12,13 +12,11 @@ __set_upstream:
 
 # Fetch latest changes from upstream
 __fetch: __set_upstream
-	echo "git fetch $(UPSTREAM_BRANCH)"
 	git fetch $(UPSTREAM_BRANCH) > /dev/null
 	@echo ""
 
 # Merge upstream into branch
 __merge:
-	echo "git merge $(UPSTREAM_BRANCH_SLASH)"
 	git merge $(UPSTREAM_BRANCH_SLASH) > /dev/null || true
 	@echo ""
 

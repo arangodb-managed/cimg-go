@@ -82,9 +82,6 @@ workflows:
               ignore: /.*/
             tags:
               only: /^v.*/
-      - check_version:
-          context:
-            - arangodboasis
 
 
   # Monthly check for new versions of cimg-go
