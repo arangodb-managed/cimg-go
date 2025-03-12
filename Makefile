@@ -13,24 +13,24 @@ __set_upstream:
 # Fetch latest changes from upstream
 __fetch: __set_upstream
 	echo "git fetch $(UPSTREAM_BRANCH)"
-	@git fetch $(UPSTREAM_BRANCH) > /dev/null
+	git fetch $(UPSTREAM_BRANCH) > /dev/null
 	@echo ""
 
 # Merge upstream into branch
 __merge:
-	@echo "git merge $(UPSTREAM_BRANCH_SLASH)"
-	@git merge $(UPSTREAM_BRANCH_SLASH) > /dev/null || true
+	echo "git merge $(UPSTREAM_BRANCH_SLASH)"
+	git merge $(UPSTREAM_BRANCH_SLASH) > /dev/null || true
 	@echo ""
 
 # Merge only new root folders from upstream that don't exist in current HEAD
 __restore_dirs:
-	@for dir in $(DIRS_TO_RESTORE); do \
+	for dir in $(DIRS_TO_RESTORE); do \
 		echo "Restore: $$dir"; \
 		git checkout --ours -- "$$dir"; \
 		git restore --recurse-submodules --source=HEAD -- "$$dir"; \
 		git add "$$dir"; \
 	done
-	@for dir in $(shell git ls-tree -d --name-only $(UPSTREAM_BRANCH_SLASH)); do \
+	for dir in $(shell git ls-tree -d --name-only $(UPSTREAM_BRANCH_SLASH)); do \
 		if [ -d "$$dir" ] && [ "$$(echo $$dir | head -c 1)" = "." ]; then \
 			if [ "$$(git ls-tree -d HEAD $$dir)" = "" ]; then \
 				echo "Drop changes: $$dir"; \
@@ -55,7 +55,6 @@ reset:
 
 
 check-updates: __fetch
-	echo "$(shell git remote show)"
 	for dir in $(shell git ls-tree -d --name-only $(UPSTREAM_BRANCH_SLASH)); do \
 		if [ -d "$$dir" ] && [ "$$(echo $$dir | head -c 1)" != "." ]; then \
 			if [ "$$(git ls-tree -d HEAD $$dir)" = "" ]; then \
