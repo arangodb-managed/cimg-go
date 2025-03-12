@@ -7,8 +7,11 @@ UPSTREAM_BRANCH_SLASH := $(UPSTREAM)/$(BRANCH)
 DIRS_TO_RESTORE := $(shell git ls-tree -d --name-only HEAD)
 
 
+__set_upstream:
+	git remote add $(UPSTREAM) "git@github.com:CircleCI-Public/cimg-go.git"
+
 # Fetch latest changes from upstream
-__fetch:
+__fetch: __set_upstream
 	echo "git fetch $(UPSTREAM_BRANCH)"
 	@git fetch $(UPSTREAM_BRANCH) > /dev/null
 	@echo ""
@@ -51,7 +54,7 @@ reset:
 	@echo ""
 
 
-check-updates:
+check-updates: __set_upstream
 	echo "$(shell git remote show)"
 	@for dir in $(shell git ls-tree -d --name-only $(UPSTREAM_BRANCH_SLASH)); do \
 		if [ -d "$$dir" ] && [ "$$(echo $$dir | head -c 1)" != "." ]; then \
