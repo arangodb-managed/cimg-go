@@ -2,7 +2,7 @@
 # Do not edit by hand; please use build scripts/templates to make changes
 set -eo pipefail
 
-GOVERSION=1.22.12
+GOVERSION=1.23.8
 CIRCLE_BRANCH_SANITIZED=${CIRCLE_BRANCH//\/}
 DOCKERIMAGE=arangodboasis/cimg-go:${GOVERSION}-${CIRCLE_TAG:-$CIRCLE_BRANCH_SANITIZED-$CIRCLE_SHA1}
 echo Building ${DOCKERIMAGE}
@@ -16,6 +16,6 @@ else
         --build-arg GO_VERSION=${GOVERSION} \
         --platform linux/amd64,linux/arm64 \
         --push \
-        --file 1.22/Dockerfile \
+        --file ${GOVERSION}/Dockerfile \
         -t ${DOCKERIMAGE} .
 fi

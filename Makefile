@@ -8,7 +8,7 @@ DIRS_TO_RESTORE := $(shell git ls-tree -d --name-only HEAD)
 
 
 __set_upstream:
-	git remote add $(UPSTREAM) "git@github.com:CircleCI-Public/cimg-go.git" || echo "Upstream already set"
+	@(git remote add $(UPSTREAM) "git@github.com:CircleCI-Public/cimg-go.git" 2> /dev/null && echo "Setting upstream") || echo "Upstream already set"
 
 # Fetch latest changes from upstream
 __fetch: __set_upstream
@@ -53,7 +53,7 @@ reset:
 
 
 check-updates: __fetch
-	for dir in $(shell git ls-tree -d --name-only $(UPSTREAM_BRANCH_SLASH)); do \
+	@for dir in $(shell git ls-tree -d --name-only $(UPSTREAM_BRANCH_SLASH)); do \
 		if [ -d "$$dir" ] && [ "$$(echo $$dir | head -c 1)" != "." ]; then \
 			if [ "$$(git ls-tree -d HEAD $$dir)" = "" ]; then \
 				echo "New version of Go image $$dir available on $$(git remote get-url $(UPSTREAM))"; \
@@ -61,3 +61,4 @@ check-updates: __fetch
 			fi; \
 		fi; \
 	done
+	@echo "No new version detected."
