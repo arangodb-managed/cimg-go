@@ -2,11 +2,16 @@
 
 # Do not edit individual Dockerfiles manually. Instead, please make changes to the Dockerfile.template, which will be used by the build script to generate Dockerfiles.
 
-FROM cimg/base:2022.06
+# By policy, the base image tag should be a quarterly tag unless there's a 
+# specific reason to use a different one. This means January, April, July, or 
+# October.
+
+# NOTE: The base image uses November due to a OpenSSL CVE. Will resume using quarterly images in Q1
+FROM cimg/base:2022.11
 
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
-ENV GO_VER="1.17.13"
+ENV GO_VER="1.18.10"
 
 # Install packages needed for CGO
 RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
@@ -21,8 +26,8 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
 	mkdir -p /home/circleci/go/bin
 
 # Install related tools
-ENV GOTESTSUM_V=1.8.1
-ENV GOCI_LINT_V=1.47.3
+ENV GOTESTSUM_V=1.8.2
+ENV GOCI_LINT_V=1.49.0
 RUN curl -sSL "https://github.com/gotestyourself/gotestsum/releases/download/v${GOTESTSUM_V}/gotestsum_${GOTESTSUM_V}_linux_amd64.tar.gz" | \
 	sudo tar -xz -C /usr/local/bin gotestsum && \
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b /usr/local/bin v${GOCI_LINT_V}
