@@ -34,7 +34,7 @@ jobs:
       - when:
           condition: <<parameters.push_release>>
           steps:
-            - deploy:
+            - run:
                 name: Push docker image
                 command: |
                   ./build-images.sh latest
